@@ -6,13 +6,21 @@ const connectDB = require("./config/db");
 connectDB();
 
 const app = express();
+
+// CORS — must be before everything
 app.use(cors({
-    origin: [
-      "https://goalportal.vercel.app/",
-      "http://localhost:5173"
-    ],
-    credentials: true
-  }));
+  origin: [
+    "https://goalportal.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:5174"
+  ],
+  credentials: true,
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"]
+}));
+
+app.options("*", cors()); // preflight
+
 app.use(express.json());
 
 app.use("/api/auth",  require("./routes/auth"));
